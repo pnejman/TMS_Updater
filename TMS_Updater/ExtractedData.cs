@@ -13,11 +13,11 @@ namespace TMS_Updater
         public string targetLang;
         public string rawOriginal;
 
-        public string FilenameFull()
+        public string FilenameFull() //filename with extension
         {
             return Regex.Replace(this.rawOriginal, ".*?\\\\", ""); //backslash order: #1: escape #2 from c# code, #2: escape #4 from Regex, #3: escape #4 from c# code, #4: actual backslash
         }
-        public string Filename()
+        public string Filename() //filename without extension
         {
             return Regex.Replace(this.rawOriginal, ".*?\\\\|\\..*?$", "");
         }

@@ -71,7 +71,7 @@ namespace TMS_Updater
 
         private void OnLCDDisplay(object sender, string msg)
         {
-            textBoxLCD.Invoke(new Action (() => textBoxLCD.AppendText(msg)));
+            textBoxLCD.Invoke(new Action (() => textBoxLCD.AppendText(msg+"\r\n")));
         }
     }
 }

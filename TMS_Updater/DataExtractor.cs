@@ -11,30 +11,60 @@ namespace TMS_Updater
     public class DataExtractor
     {
         public event EventHandler<string> msgToLcd;
+        int noOfFilesDetected;
+        int noOfFilesProcessed = 0;
+        Logger logger;
 
         public void Begin(string pathToSource, string pathToTMS)
         {
+            try
+            {
+                this.logger = new Logger();
+                msgToLcd?.Invoke(this, $"Log file created at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".");
+            }
+            catch (Exception e)
+            {
+                msgToLcd?.Invoke(this, $"Warning: Failed to create log file at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".\r\n" +
+                                       $"{e.Message}");
+            }
+
             List<string> allFiles = Directory.GetFiles(pathToSource, "*.sdlxliff", SearchOption.AllDirectories).ToList();
             if (allFiles.Count() == 0)
             {
-                msgToLcd?.Invoke(this, $"Error: No SDLXLIFF files found in given directory.\r\n");
+                msgToLcd?.Invoke(this, $"Error: No SDLXLIFF files found in given directory.");
+                this.logger.Log($"No SDLXLIFF files were found in given directory.");
                 return;
             }
 
-            msgToLcd?.Invoke(this, $"{allFiles.Count()} SDLXLIFF files detected.\r\n");
+            this.noOfFilesDetected = allFiles.Count();
+            msgToLcd?.Invoke(this, $"{noOfFilesDetected} SDLXLIFF files detected.");
+            this.logger.Log($"{noOfFilesDetected} SDLXLIFF files detected.");
             ExtractDataFromAll(allFiles);
+            End();
         }
 
         List<ExtractedData> ExtractDataFromAll(List<string> allFiles)
         {
-            List<ExtractedData> tempList = new List<ExtractedData>();
+            List<ExtractedData> listOfExtractedData = new List<ExtractedData>();
             foreach (var file in allFiles)
             {
-                ExtractedData dataToAdd = ExtractDataFromOne(file);
-                tempList.Add(dataToAdd);
-                msgToLcd?.Invoke(this, $"{dataToAdd.Zipname()}\r\n"); //debug
+                try
+                {
+                    ExtractedData dataToAdd = ExtractDataFromOne(file);
+                    listOfExtractedData.Add(dataToAdd);
+                    this.noOfFilesProcessed++;
+                }
+                catch (Exception e)
+                {
+                    msgToLcd?.Invoke(this, $"Error: Failed to extract data from:\r\n" +
+                                           $"{file}\r\n" +
+                                           $"{e.Message}");
+                    this.logger.Log($"Error: Failed to extract data from:\r\n" +
+                                    $"{file}\r\n" +
+                                    $"{e.Message}");
+                }
             }
-            return tempList;
+            return listOfExtractedData;
         }
 
         ExtractedData ExtractDataFromOne(string file)
@@ -55,10 +85,10 @@ namespace TMS_Updater
 
                     if (fileReader.Name == "file")
                     {
-                        rawOriginal = fileReader.GetAttribute("original");
+                        rawOriginal = fileReader.GetAttribute("original"); //"original" is the name of attribute inside "file" element
                         rawSRCLang = fileReader.GetAttribute("source-language");
                         rawTRGLang = fileReader.GetAttribute("target-language");
-                        break;
+                        break; //skip rest of the file
                     }
                 }
             }
@@ -69,6 +99,18 @@ namespace TMS_Updater
                 targetLang = rawTRGLang,
                 rawOriginal = rawOriginal,
             };
+        }
+
+        void End()
+        {
+            msgToLcd?.Invoke(this, $"__________\r\n" +
+                                   $"Job's done.\r\n" +
+                                   $"Files detected: {this.noOfFilesDetected}\r\n" +
+                                   $"Files processed: {this.noOfFilesProcessed}\r\n");
+            this.logger.Log($"__________\r\n" +
+                            $"Job's done.\r\n" +
+                            $"Files detected: {this.noOfFilesDetected}\r\n" +
+                            $"Files processed: {this.noOfFilesProcessed}\r\n");
         }
     }
 }
