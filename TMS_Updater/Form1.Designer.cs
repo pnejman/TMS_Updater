@@ -91,7 +91,7 @@
             this.textBoxLCD.Name = "textBoxLCD";
             this.textBoxLCD.ReadOnly = true;
             this.textBoxLCD.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxLCD.Size = new System.Drawing.Size(776, 140);
+            this.textBoxLCD.Size = new System.Drawing.Size(776, 537);
             this.textBoxLCD.TabIndex = 5;
             // 
             // buttonSourceBrowse
@@ -118,7 +118,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 259);
+            this.ClientSize = new System.Drawing.Size(800, 647);
             this.Controls.Add(this.buttonTMSBrowse);
             this.Controls.Add(this.buttonSourceBrowse);
             this.Controls.Add(this.textBoxLCD);

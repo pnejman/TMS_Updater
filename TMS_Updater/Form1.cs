@@ -13,7 +13,7 @@ namespace TMS_Updater
 {
     public partial class Form1 : Form
     {
-        GeneralFilesProcessor filesProcessor = new GeneralFilesProcessor();
+        DataExtractor filesProcessor = new DataExtractor();
         
         public Form1()
         {
