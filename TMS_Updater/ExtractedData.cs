@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace TMS_Updater
 {
@@ -12,12 +13,13 @@ namespace TMS_Updater
         public string sourceLang;
         public string targetLang;
         public string rawOriginal;
+        public string file; //full path to XLIFF with file name and extension
 
-        public string FilenameFull() //filename with extension
+        public string FilenameFull() //original file name with extension
         {
             return Regex.Replace(this.rawOriginal, ".*?\\\\", ""); //backslash order: #1: escape #2 from c# code, #2: escape #4 from Regex, #3: escape #4 from c# code, #4: actual backslash
         }
-        public string Filename() //filename without extension
+        public string Filename() //original file name without extension
         {
             return Regex.Replace(this.rawOriginal, ".*?\\\\|\\..*?$", "");
         }
@@ -25,11 +27,6 @@ namespace TMS_Updater
         public string TaskID()
         {
             return Regex.Replace(this.rawOriginal, "(.*?\\\\Data\\\\TC\\\\)|(\\\\SRC\\\\.*?$)", "");
-        }
-
-        public string Zipname()
-        {
-            return this.TaskID() + "_" + this.Filename();
         }
     }
 }

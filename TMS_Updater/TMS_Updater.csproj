@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ZipInjector.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ExtractedData.cs" />
     <Compile Include="DataExtractor.cs" />

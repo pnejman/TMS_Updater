@@ -27,7 +27,7 @@ namespace TMS_Updater
 
         public void Log(string textToLog)
         {
-            File.AppendAllText(path + this.logFileName, DateTime.Now.ToString("HH:mm:ss") + ": " + textToLog + "\r\n");
+            File.AppendAllText(path + this.logFileName, DateTime.Now.ToString("HH:mm:ss") + ": " + textToLog + "\r\n\r\n");
         }
     }
 }

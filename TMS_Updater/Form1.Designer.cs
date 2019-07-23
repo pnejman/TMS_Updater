@@ -68,9 +68,9 @@
             this.labelTMSFolder.AutoSize = true;
             this.labelTMSFolder.Location = new System.Drawing.Point(12, 46);
             this.labelTMSFolder.Name = "labelTMSFolder";
-            this.labelTMSFolder.Size = new System.Drawing.Size(125, 13);
+            this.labelTMSFolder.Size = new System.Drawing.Size(94, 13);
             this.labelTMSFolder.TabIndex = 3;
-            this.labelTMSFolder.Text = "Folder with TMS archive:";
+            this.labelTMSFolder.Text = "TMS \"jobs\" folder:";
             // 
             // buttonProceed
             // 

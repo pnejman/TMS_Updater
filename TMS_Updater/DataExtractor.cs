@@ -11,8 +11,6 @@ namespace TMS_Updater
     public class DataExtractor
     {
         public event EventHandler<string> msgToLcd;
-        int noOfFilesDetected;
-        int noOfFilesProcessed = 0;
         Logger logger;
 
         public void Begin(string pathToSource, string pathToTMS)
@@ -26,21 +24,48 @@ namespace TMS_Updater
             {
                 msgToLcd?.Invoke(this, $"Warning: Failed to create log file at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".\r\n" +
                                        $"{e.Message}");
-            }
-
-            List<string> allFiles = Directory.GetFiles(pathToSource, "*.sdlxliff", SearchOption.AllDirectories).ToList();
-            if (allFiles.Count() == 0)
-            {
-                msgToLcd?.Invoke(this, $"Error: No SDLXLIFF files found in given directory.");
-                this.logger.Log($"No SDLXLIFF files were found in given directory.");
                 return;
             }
 
-            this.noOfFilesDetected = allFiles.Count();
-            msgToLcd?.Invoke(this, $"{noOfFilesDetected} SDLXLIFF files detected.");
-            this.logger.Log($"{noOfFilesDetected} SDLXLIFF files detected.");
-            ExtractDataFromAll(allFiles);
-            End();
+            this.logger.Log($"Fixed files path set to:\r\n{pathToSource}");
+            this.logger.Log($"TMS path set to:\r\n{pathToTMS}");
+
+            if (!(ArePathsValid(pathToSource, pathToTMS)))
+            {
+                return;
+            }
+
+            List<string> allFiles = Directory.GetFiles(pathToSource, "*.sdlxliff", SearchOption.AllDirectories).ToList();
+            msgToLcd?.Invoke(this, $"{allFiles.Count()} SDLXLIFF files detected.");
+            this.logger.Log($"{allFiles.Count()} SDLXLIFF files detected.");
+
+            ZipInjector zipInjector = new ZipInjector(pathToSource, pathToTMS, ExtractDataFromAll(allFiles), this.logger);
+            zipInjector.msgToLcd += PassMsg;
+            zipInjector.Begin();
+        }
+
+        bool ArePathsValid(string pathToSource, string pathToTMS)
+        {
+            if (Directory.GetFiles(pathToSource, "*.sdlxliff", SearchOption.AllDirectories).Length == 0)
+            {
+                msgToLcd?.Invoke(this, $"Error: No SDLXLIFF files found in given directory.");
+                this.logger.Log($"No SDLXLIFF files were found in given directory.");
+                return false;
+            }
+
+            if (Directory.GetFiles(pathToTMS, "*.zip").Length == 0)
+            {
+                msgToLcd?.Invoke(this, $"Error: No archives found in given TMS directory.");
+                this.logger.Log($"No archives were found in given TMS directory.");
+                return false;
+            }
+
+            return true;
+        }
+
+        void PassMsg(object sender, string msgToPass)
+        {
+            msgToLcd?.Invoke(this, msgToPass);
         }
 
         List<ExtractedData> ExtractDataFromAll(List<string> allFiles)
@@ -52,7 +77,6 @@ namespace TMS_Updater
                 {
                     ExtractedData dataToAdd = ExtractDataFromOne(file);
                     listOfExtractedData.Add(dataToAdd);
-                    this.noOfFilesProcessed++;
                 }
                 catch (Exception e)
                 {
@@ -98,19 +122,8 @@ namespace TMS_Updater
                 sourceLang = rawSRCLang,
                 targetLang = rawTRGLang,
                 rawOriginal = rawOriginal,
+                file = file,
             };
-        }
-
-        void End()
-        {
-            msgToLcd?.Invoke(this, $"__________\r\n" +
-                                   $"Job's done.\r\n" +
-                                   $"Files detected: {this.noOfFilesDetected}\r\n" +
-                                   $"Files processed: {this.noOfFilesProcessed}\r\n");
-            this.logger.Log($"__________\r\n" +
-                            $"Job's done.\r\n" +
-                            $"Files detected: {this.noOfFilesDetected}\r\n" +
-                            $"Files processed: {this.noOfFilesProcessed}\r\n");
         }
     }
 }

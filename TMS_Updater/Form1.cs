@@ -13,12 +13,12 @@ namespace TMS_Updater
 {
     public partial class Form1 : Form
     {
-        DataExtractor filesProcessor = new DataExtractor();
+        DataExtractor dataExtractor = new DataExtractor();
         
         public Form1()
         {
             InitializeComponent();
-            filesProcessor.msgToLcd += OnLCDDisplay;
+            dataExtractor.msgToLcd += OnLCDDisplay;
             textBoxPathToSource.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             textBoxPathToTMS.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         }
@@ -26,7 +26,7 @@ namespace TMS_Updater
         private void ButtonProceed_Click(object sender, EventArgs e)
         {
             DisableGui();
-            filesProcessor.Begin(textBoxPathToSource.Text, textBoxPathToTMS.Text);
+            dataExtractor.Begin(textBoxPathToSource.Text, textBoxPathToTMS.Text);
         }
 
         private void ButtonSourceBrowse_Click(object sender, EventArgs e)
@@ -71,7 +71,7 @@ namespace TMS_Updater
 
         private void OnLCDDisplay(object sender, string msg)
         {
-            textBoxLCD.Invoke(new Action (() => textBoxLCD.AppendText(msg+"\r\n")));
+            textBoxLCD.Invoke(new Action (() => textBoxLCD.AppendText("* " + msg +"\r\n\r\n")));
         }
     }
 }
