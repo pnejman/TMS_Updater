@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace TMS_Updater
 {
@@ -11,15 +12,13 @@ namespace TMS_Updater
     {
         public event EventHandler<string> msgToLcd;
         List<ExtractedData> fullListOfextrData;
-        string pathToSrc;
         string pathToTMS;
         Logger logger;
         int noOfFilesProcessed = 0;
 
-        public ZipInjector(string pathToSrc, string pathToTMS, List<ExtractedData> extractedData, Logger logger)
+        public ZipInjector(string pathToTMS, List<ExtractedData> extractedData, Logger logger)
         {
             this.fullListOfextrData = extractedData;
-            this.pathToSrc = pathToSrc;
             this.pathToTMS = pathToTMS;
             this.logger = logger;
         }
@@ -32,6 +31,13 @@ namespace TMS_Updater
                 {
                     continue; //skip reminder of this iteration
                 }
+
+                currentXliffData.archiveSubname = DetermineSubfolderName(currentXliffData);
+
+                if (!(DoesFileInArchiveExist(currentXliffData)))
+                {
+                    continue;
+                }
                 this.noOfFilesProcessed++;
             }
 
@@ -43,6 +49,7 @@ namespace TMS_Updater
             List<string> archivesForThisXliff = Directory.GetFiles(this.pathToTMS, currentXliffData.TaskID() + "_*").ToList();
             if (archivesForThisXliff.Count == 1)
             {
+                currentXliffData.ZipName = archivesForThisXliff[0];
                 return true;
             }
             else
@@ -55,6 +62,59 @@ namespace TMS_Updater
                                 $"Archive for Task ID: {currentXliffData.TaskID()} not found.");
                 return false;
             }
+        }
+
+        string DetermineSubfolderName(ExtractedData currentXliffData)
+        {
+            string part1;
+            string part2;
+
+            switch (currentXliffData.sourceLang)
+            {
+                //case "xy-XY":
+                //    placeholder for exceptions
+                //    break;
+                case "da-DK":
+                    part1 = "DA";
+                    break;
+                default:
+                    if (Regex.Replace(currentXliffData.sourceLang, "-[A-Za-z]+", "").ToUpper() == Regex.Replace(currentXliffData.sourceLang, "[A-Za-z]+-", "").ToUpper()) //source language code and flavour code are the same
+                    {
+                        part1 = Regex.Replace(currentXliffData.sourceLang, "-[A-Za-z]+", "").ToUpper();//xy-XY will be converted to XY
+                    }
+                    else
+                    {
+                        part1 = Regex.Replace(currentXliffData.sourceLang, "-[A-Za-z]+", "").ToUpper() + "-" + Regex.Replace(currentXliffData.sourceLang, "[A-Za-z]+-", "").ToUpper();//xy-XY will be converted to XY
+                    }
+                    break;
+            }
+
+            switch (currentXliffData.targetLang)
+            {
+                //case "xy-XY":
+                //    placeholder for exceptions
+                //    break;
+                case "da-DK":
+                    part2 = "DA";
+                    break;
+                default:
+                    if (Regex.Replace(currentXliffData.targetLang, "-[A-Za-z]+", "").ToUpper() == Regex.Replace(currentXliffData.targetLang, "[A-Za-z]+-", "").ToUpper())
+                    {
+                        part2 = Regex.Replace(currentXliffData.targetLang, "-[A-Za-z]+", "").ToUpper();
+                    }
+                    else
+                    {
+                        part2 = Regex.Replace(currentXliffData.targetLang, "-[A-Za-z]+", "").ToUpper() + "-" + Regex.Replace(currentXliffData.targetLang, "[A-Za-z]+-", "").ToUpper();
+                    }
+                    break;
+            }
+
+            return part1 + "_" + part2;
+        }
+
+        bool DoesFileInArchiveExist(ExtractedData currentXliffData)
+        {
+            return true;
         }
 
         void DisplaySummary()

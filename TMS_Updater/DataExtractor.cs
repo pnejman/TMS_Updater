@@ -39,7 +39,7 @@ namespace TMS_Updater
             msgToLcd?.Invoke(this, $"{allFiles.Count()} SDLXLIFF files detected.");
             this.logger.Log($"{allFiles.Count()} SDLXLIFF files detected.");
 
-            ZipInjector zipInjector = new ZipInjector(pathToSource, pathToTMS, ExtractDataFromAll(allFiles), this.logger);
+            ZipInjector zipInjector = new ZipInjector(pathToTMS, ExtractDataFromAll(allFiles), this.logger);
             zipInjector.msgToLcd += PassMsg;
             zipInjector.Begin();
         }

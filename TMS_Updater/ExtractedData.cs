@@ -14,6 +14,8 @@ namespace TMS_Updater
         public string targetLang;
         public string rawOriginal;
         public string file; //full path to XLIFF with file name and extension
+        public string ZipName;
+        public string archiveSubname;
 
         public string FilenameFull() //original file name with extension
         {
