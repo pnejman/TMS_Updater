@@ -36,6 +36,7 @@
             this.textBoxLCD = new System.Windows.Forms.TextBox();
             this.buttonSourceBrowse = new System.Windows.Forms.Button();
             this.buttonTMSBrowse = new System.Windows.Forms.Button();
+            this.buttonDictionary = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxPathToSource
@@ -114,11 +115,22 @@
             this.buttonTMSBrowse.UseVisualStyleBackColor = true;
             this.buttonTMSBrowse.Click += new System.EventHandler(this.ButtonTMSBrowse_Click);
             // 
+            // buttonDictionary
+            // 
+            this.buttonDictionary.Location = new System.Drawing.Point(614, 69);
+            this.buttonDictionary.Name = "buttonDictionary";
+            this.buttonDictionary.Size = new System.Drawing.Size(92, 23);
+            this.buttonDictionary.TabIndex = 8;
+            this.buttonDictionary.Text = "Check Glossary";
+            this.buttonDictionary.UseVisualStyleBackColor = true;
+            this.buttonDictionary.Click += new System.EventHandler(this.ButtonDictionary_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 647);
+            this.Controls.Add(this.buttonDictionary);
             this.Controls.Add(this.buttonTMSBrowse);
             this.Controls.Add(this.buttonSourceBrowse);
             this.Controls.Add(this.textBoxLCD);
@@ -146,6 +158,7 @@
         private System.Windows.Forms.TextBox textBoxLCD;
         private System.Windows.Forms.Button buttonSourceBrowse;
         private System.Windows.Forms.Button buttonTMSBrowse;
+        private System.Windows.Forms.Button buttonDictionary;
     }
 }
 

@@ -67,11 +67,24 @@ namespace TMS_Updater
             textBoxPathToTMS.Enabled = false;
             buttonSourceBrowse.Enabled = false;
             buttonTMSBrowse.Enabled = false;
+            buttonDictionary.Enabled = false;
         }
 
         private void OnLCDDisplay(object sender, string msg)
         {
             textBoxLCD.Invoke(new Action (() => textBoxLCD.AppendText("* " + msg +"\r\n\r\n")));
+        }
+
+        private void ButtonDictionary_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("glossary.txt");
+            }
+            catch
+            {
+                MessageBox.Show("Glossary file currently unavailable.\r\nIt will be generated automatically during program run.");
+            }
         }
     }
 }

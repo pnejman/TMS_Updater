@@ -15,6 +15,7 @@ namespace TMS_Updater
         string pathToTMS;
         Logger logger;
         int noOfFilesProcessed = 0;
+        LangGlossary glossary = new LangGlossary();
 
         public ZipInjector(string pathToTMS, List<ExtractedData> extractedData, Logger logger)
         {
@@ -56,16 +57,18 @@ namespace TMS_Updater
             {
                 msgToLcd?.Invoke(this, $"Error while processing file\r\n" +
                            $"{currentXliffData.file}\r\n" +
-                           $"Archive for Task ID: {currentXliffData.TaskID()} not found.");
+                           $"Archive for Task ID {currentXliffData.TaskID()} not found.");
                 this.logger.Log($"Error while processing file\r\n" +
                                 $"{currentXliffData.file}\r\n" +
-                                $"Archive for Task ID: {currentXliffData.TaskID()} not found.");
+                                $"Archive for Task ID {currentXliffData.TaskID()} not found.");
                 return false;
             }
         }
 
         string DetermineSubfolderName(ExtractedData currentXliffData)
         {
+            glossary.Prepare();
+
             string part1;
             string part2;
 
