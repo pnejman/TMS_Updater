@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
+using Ionic.Zip;
 
 namespace TMS_Updater
 {
@@ -50,7 +51,7 @@ namespace TMS_Updater
             List<string> archivesForThisXliff = Directory.GetFiles(this.pathToTMS, currentXliffData.TaskID() + "_*").ToList();
             if (archivesForThisXliff.Count == 1)
             {
-                currentXliffData.ZipName = archivesForThisXliff[0];
+                currentXliffData.ZipNameWithPath = archivesForThisXliff[0];
                 return true;
             }
             else
@@ -71,53 +72,65 @@ namespace TMS_Updater
 
             string part1;
             string part2;
+            string value;
 
-            switch (currentXliffData.sourceLang)
+            if (glossary.content.TryGetValue(currentXliffData.sourceLang, out value))
             {
-                //case "xy-XY":
-                //    placeholder for exceptions
-                //    break;
-                case "da-DK":
-                    part1 = "DA";
-                    break;
-                default:
-                    if (Regex.Replace(currentXliffData.sourceLang, "-[A-Za-z]+", "").ToUpper() == Regex.Replace(currentXliffData.sourceLang, "[A-Za-z]+-", "").ToUpper()) //source language code and flavour code are the same
-                    {
-                        part1 = Regex.Replace(currentXliffData.sourceLang, "-[A-Za-z]+", "").ToUpper();//xy-XY will be converted to XY
-                    }
-                    else
-                    {
-                        part1 = Regex.Replace(currentXliffData.sourceLang, "-[A-Za-z]+", "").ToUpper() + "-" + Regex.Replace(currentXliffData.sourceLang, "[A-Za-z]+-", "").ToUpper();//xy-XY will be converted to XY
-                    }
-                    break;
+                part1 = value;
+            }
+            else
+            {
+                if (Regex.Replace(currentXliffData.sourceLang, "-[A-Za-z]+", "").ToUpper() == Regex.Replace(currentXliffData.sourceLang, "[A-Za-z]+-", "").ToUpper()) //source language code and flavour code are the same
+                {
+                    part1 = Regex.Replace(currentXliffData.sourceLang, "-[A-Za-z]+", "").ToUpper();//xy-XY will be converted to XY
+                }
+                else
+                {
+                    part1 = Regex.Replace(currentXliffData.sourceLang, "-[A-Za-z]+", "").ToUpper() + "-" + Regex.Replace(currentXliffData.sourceLang, "[A-Za-z]+-", "").ToUpper();//xy-XY will be converted to XY
+                }
             }
 
-            switch (currentXliffData.targetLang)
+            if (glossary.content.TryGetValue(currentXliffData.targetLang, out value))
             {
-                //case "xy-XY":
-                //    placeholder for exceptions
-                //    break;
-                case "da-DK":
-                    part2 = "DA";
-                    break;
-                default:
-                    if (Regex.Replace(currentXliffData.targetLang, "-[A-Za-z]+", "").ToUpper() == Regex.Replace(currentXliffData.targetLang, "[A-Za-z]+-", "").ToUpper())
-                    {
-                        part2 = Regex.Replace(currentXliffData.targetLang, "-[A-Za-z]+", "").ToUpper();
-                    }
-                    else
-                    {
-                        part2 = Regex.Replace(currentXliffData.targetLang, "-[A-Za-z]+", "").ToUpper() + "-" + Regex.Replace(currentXliffData.targetLang, "[A-Za-z]+-", "").ToUpper();
-                    }
-                    break;
+                part2 = value;
             }
+            else
+            {
 
+                if (Regex.Replace(currentXliffData.targetLang, "-[A-Za-z]+", "").ToUpper() == Regex.Replace(currentXliffData.targetLang, "[A-Za-z]+-", "").ToUpper())
+                {
+                    part2 = Regex.Replace(currentXliffData.targetLang, "-[A-Za-z]+", "").ToUpper();
+                }
+                else
+                {
+                    part2 = Regex.Replace(currentXliffData.targetLang, "-[A-Za-z]+", "").ToUpper() + "-" + Regex.Replace(currentXliffData.targetLang, "[A-Za-z]+-", "").ToUpper();
+                }
+            }
             return part1 + "_" + part2;
         }
 
         bool DoesFileInArchiveExist(ExtractedData currentXliffData)
         {
-            return true;
+            using (var zip = ZipFile.Read(currentXliffData.ZipNameWithPath))
+            {
+                foreach (ZipEntry entry in zip.Entries)
+                {
+                    string expectedFilename = "TGT/"+currentXliffData.archiveSubname+"/"+currentXliffData.XliffFilename();
+                    if (entry.FileName == expectedFilename)
+                    {
+                        return true;
+                    }
+                }
+            }
+            msgToLcd?.Invoke(this, $"Error: Couldn't find file:\r\n" +
+                                   $"{currentXliffData.XliffFilename()}\r\n" +
+                                   $"inside archive\r\n" +
+                                   $"{currentXliffData.ZipNameWithPath}");
+            this.logger.Log($"Error: Couldn't find file:\r\n" +
+                            $"{currentXliffData.XliffFilename()}\r\n" +
+                            $"inside archive\r\n" +
+                            $"{currentXliffData.ZipNameWithPath}");
+            return false;
         }
 
         void DisplaySummary()
