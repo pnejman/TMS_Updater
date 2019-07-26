@@ -40,9 +40,14 @@ namespace TMS_Updater
                 {
                     continue;
                 }
+
+                if (!(IsFileInZipOlder(currentXliffData)))
+                {
+                    continue;
+                }
+
                 this.noOfFilesProcessed++;
             }
-
             DisplaySummary();
         }
 
@@ -56,12 +61,11 @@ namespace TMS_Updater
             }
             else
             {
-                msgToLcd?.Invoke(this, $"Error while processing file\r\n" +
-                           $"{currentXliffData.file}\r\n" +
-                           $"Archive for Task ID {currentXliffData.TaskID()} not found.");
-                this.logger.Log($"Error while processing file\r\n" +
-                                $"{currentXliffData.file}\r\n" +
-                                $"Archive for Task ID {currentXliffData.TaskID()} not found.");
+                string text = $"Error while processing file\r\n" +
+                              $"{currentXliffData.file}\r\n" +
+                              $"Archive for Task ID {currentXliffData.TaskID()} not found.";
+                msgToLcd?.Invoke(this, text);
+                this.logger.Log(text);
                 return false;
             }
         }
@@ -111,36 +115,59 @@ namespace TMS_Updater
 
         bool DoesFileInArchiveExist(ExtractedData currentXliffData)
         {
-            using (var zip = ZipFile.Read(currentXliffData.ZipNameWithPath))
+            using (ZipFile zip = ZipFile.Read(currentXliffData.ZipNameWithPath))
             {
                 foreach (ZipEntry entry in zip.Entries)
                 {
-                    string expectedFilename = "TGT/"+currentXliffData.archiveSubname+"/"+currentXliffData.XliffFilename();
+                    string expectedFilename = "TGT/" + currentXliffData.archiveSubname + "/" + currentXliffData.XliffFilename();
                     if (entry.FileName == expectedFilename)
                     {
                         return true;
                     }
                 }
             }
-            msgToLcd?.Invoke(this, $"Error: Couldn't find file:\r\n" +
-                                   $"{currentXliffData.XliffFilename()}\r\n" +
-                                   $"inside archive\r\n" +
-                                   $"{currentXliffData.ZipNameWithPath}");
-            this.logger.Log($"Error: Couldn't find file:\r\n" +
-                            $"{currentXliffData.XliffFilename()}\r\n" +
-                            $"inside archive\r\n" +
-                            $"{currentXliffData.ZipNameWithPath}");
+            string text = $"Error: Couldn't find file:\r\n" +
+                          $"{currentXliffData.XliffFilename()}\r\n" +
+                          $"inside archive\r\n" +
+                          $"{currentXliffData.ZipNameWithPath}";
+            msgToLcd?.Invoke(this, text);
+            this.logger.Log(text);
+            return false;
+        }
+
+        bool IsFileInZipOlder(ExtractedData currentXliffData)
+        {
+            using (ZipFile zip = ZipFile.Read(currentXliffData.ZipNameWithPath))
+            {
+                foreach (ZipEntry entry in zip)
+                {
+                    string expectedFilename = "TGT/" + currentXliffData.archiveSubname + "/" + currentXliffData.XliffFilename();
+                    if (entry.FileName == expectedFilename)
+                    {
+                        DateTime zipFileDate = entry.LastModified;
+                        DateTime incomingFileDate = File.GetLastWriteTime(currentXliffData.file);
+                        if (zipFileDate < incomingFileDate)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            string text = $"File skipped:\r\n" +
+                          $"{currentXliffData.XliffFilename()}\r\n" +
+                          $"because it's older or the same as the file already present in archive.";
+            msgToLcd?.Invoke(this, text);
+            this.logger.Log(text);
             return false;
         }
 
         void DisplaySummary()
         {
-            msgToLcd?.Invoke(this, $"Job's done.\r\n" +
-                                   $"Files detected: {this.fullListOfextrData.Count}\r\n" +
-                                   $"Files processed: {this.noOfFilesProcessed}\r\n");
-            this.logger.Log($"Job's done.\r\n" +
-                            $"Files detected: {this.fullListOfextrData.Count}\r\n" +
-                            $"Files processed: {this.noOfFilesProcessed}\r\n");
+            string text = $"Job's done.\r\n" +
+                          $"Files detected: {this.fullListOfextrData.Count}\r\n" +
+                          $"Files processed: {this.noOfFilesProcessed}\r\n";
+            msgToLcd?.Invoke(this, text);
+            this.logger.Log(text);
         }
     }
 }
