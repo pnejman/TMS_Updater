@@ -11,6 +11,7 @@ namespace TMS_Updater
     {
         string logFileName;
         string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\TMS Updater Logs\\";
+        public event EventHandler<string> passMsgToDisplay;
 
         public Logger()
         {
@@ -28,6 +29,7 @@ namespace TMS_Updater
         public void Log(string textToLog)
         {
             File.AppendAllText(path + this.logFileName, DateTime.Now.ToString("HH:mm:ss") + ": " + textToLog + "\r\n\r\n");
+            passMsgToDisplay?.Invoke(this, textToLog);
         }
     }
 }

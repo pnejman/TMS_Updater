@@ -10,23 +10,12 @@ namespace TMS_Updater
 {
     public class DataExtractor
     {
-        public event EventHandler<string> msgToLcd;
+        //public event EventHandler<string> passMsgToDisplay;
         Logger logger;
 
-        public void Begin(string pathToSource, string pathToTMS)
+        public void Begin(string pathToSource, string pathToTMS, Logger logger)
         {
-            try
-            {
-                this.logger = new Logger();
-                msgToLcd?.Invoke(this, $"Log file created at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".");
-            }
-            catch (Exception e)
-            {
-                msgToLcd?.Invoke(this, $"Warning: Failed to create log file at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".\r\n" +
-                                       $"{e.Message}");
-                return;
-            }
-
+            this.logger = logger;
             this.logger.Log($"Fixed files path set to:\r\n{pathToSource}");
             this.logger.Log($"TMS path set to:\r\n{pathToTMS}");
 
@@ -36,11 +25,9 @@ namespace TMS_Updater
             }
 
             List<string> allFiles = Directory.GetFiles(pathToSource, "*.sdlxliff", SearchOption.AllDirectories).ToList();
-            msgToLcd?.Invoke(this, $"{allFiles.Count()} SDLXLIFF files detected.");
-            this.logger.Log($"{allFiles.Count()} SDLXLIFF files detected.");
+            this.logger.Log($"{allFiles.Count()} sdlxliff files detected.");
 
             ZipInjector zipInjector = new ZipInjector(pathToTMS, ExtractDataFromAll(allFiles), this.logger);
-            zipInjector.msgToLcd += PassMsg;
             zipInjector.Begin();
         }
 
@@ -48,24 +35,17 @@ namespace TMS_Updater
         {
             if (Directory.GetFiles(pathToSource, "*.sdlxliff", SearchOption.AllDirectories).Length == 0)
             {
-                msgToLcd?.Invoke(this, $"Error: No SDLXLIFF files found in given directory.");
-                this.logger.Log($"No SDLXLIFF files were found in given directory.");
+                this.logger.Log($"Error: No SDLXLIFF files found in given directory.");
                 return false;
             }
 
             if (Directory.GetFiles(pathToTMS, "*.zip").Length == 0)
             {
-                msgToLcd?.Invoke(this, $"Error: No archives found in given TMS directory.");
-                this.logger.Log($"No archives were found in given TMS directory.");
+                this.logger.Log($"Error: No archives found in given TMS directory.");
                 return false;
             }
 
             return true;
-        }
-
-        void PassMsg(object sender, string msgToPass)
-        {
-            msgToLcd?.Invoke(this, msgToPass);
         }
 
         List<ExtractedData> ExtractDataFromAll(List<string> allFiles)
@@ -80,12 +60,10 @@ namespace TMS_Updater
                 }
                 catch (Exception e)
                 {
-                    msgToLcd?.Invoke(this, $"Error: Failed to extract data from:\r\n" +
-                                           $"{file}\r\n" +
-                                           $"{e.Message}");
-                    this.logger.Log($"Error: Failed to extract data from:\r\n" +
-                                    $"{file}\r\n" +
-                                    $"{e.Message}");
+                    string text = $"Error: Failed to extract data from:\r\n" +
+                                  $"{file}\r\n" +
+                                  $"{e.Message}";
+                    this.logger.Log(text);
                 }
             }
             return listOfExtractedData;

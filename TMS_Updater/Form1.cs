@@ -14,11 +14,11 @@ namespace TMS_Updater
     public partial class Form1 : Form
     {
         DataExtractor dataExtractor = new DataExtractor();
-        
+        Logger logger;
+
         public Form1()
         {
             InitializeComponent();
-            dataExtractor.msgToLcd += OnLCDDisplay;
             textBoxPathToSource.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             textBoxPathToTMS.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         }
@@ -26,7 +26,21 @@ namespace TMS_Updater
         private void ButtonProceed_Click(object sender, EventArgs e)
         {
             DisableGui();
-            dataExtractor.Begin(textBoxPathToSource.Text, textBoxPathToTMS.Text);
+
+            try
+            {
+                this.logger = new Logger();
+                this.logger.passMsgToDisplay += OnIncomingTextToDisplay;
+                OnIncomingTextToDisplay(this, $"Log file created at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".");
+            }
+            catch (Exception error)
+            {
+                OnIncomingTextToDisplay(this, $"Warning: Failed to create log file at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".\r\n" +
+                                              $"{error.Message}");
+                return;
+            }
+
+            dataExtractor.Begin(textBoxPathToSource.Text, textBoxPathToTMS.Text, this.logger);
         }
 
         private void ButtonSourceBrowse_Click(object sender, EventArgs e)
@@ -70,7 +84,7 @@ namespace TMS_Updater
             buttonDictionary.Enabled = false;
         }
 
-        private void OnLCDDisplay(object sender, string msg)
+        private void OnIncomingTextToDisplay(object sender, string msg)
         {
             textBoxLCD.Invoke(new Action (() => textBoxLCD.AppendText("* " + msg +"\r\n\r\n")));
         }

@@ -11,7 +11,6 @@ namespace TMS_Updater
 {
     public class ZipInjector
     {
-        public event EventHandler<string> msgToLcd;
         List<ExtractedData> fullListOfextrData;
         string pathToTMS;
         Logger logger;
@@ -64,7 +63,6 @@ namespace TMS_Updater
                 string text = $"Error while processing file\r\n" +
                               $"{currentXliffData.file}\r\n" +
                               $"Archive for Task ID {currentXliffData.TaskID()} not found.";
-                msgToLcd?.Invoke(this, text);
                 this.logger.Log(text);
                 return false;
             }
@@ -129,8 +127,9 @@ namespace TMS_Updater
             string text = $"Error: Couldn't find file:\r\n" +
                           $"{currentXliffData.XliffFilename()}\r\n" +
                           $"inside archive\r\n" +
-                          $"{currentXliffData.ZipNameWithPath}";
-            msgToLcd?.Invoke(this, text);
+                          $"{currentXliffData.ZipNameWithPath}" +
+                          $"and subfolder\r\n" +
+                          $"{currentXliffData.archiveSubname}";
             this.logger.Log(text);
             return false;
         }
@@ -156,7 +155,6 @@ namespace TMS_Updater
             string text = $"File skipped:\r\n" +
                           $"{currentXliffData.XliffFilename()}\r\n" +
                           $"because it's older or the same as the file already present in archive.";
-            msgToLcd?.Invoke(this, text);
             this.logger.Log(text);
             return false;
         }
@@ -166,7 +164,6 @@ namespace TMS_Updater
             string text = $"Job's done.\r\n" +
                           $"Files detected: {this.fullListOfextrData.Count}\r\n" +
                           $"Files processed: {this.noOfFilesProcessed}\r\n";
-            msgToLcd?.Invoke(this, text);
             this.logger.Log(text);
         }
     }
