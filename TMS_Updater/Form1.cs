@@ -13,7 +13,7 @@ namespace TMS_Updater
 {
     public partial class Form1 : Form
     {
-        DataExtractor dataExtractor = new DataExtractor();
+        DataExtractor dataExtractor = new DataExtractor(); //nicely encapsulated functionality
         Logger logger;
 
         public Form1()
@@ -25,11 +25,11 @@ namespace TMS_Updater
 
         private void ButtonProceed_Click(object sender, EventArgs e)
         {
-            DisableGui();
+            DisableGui(); //please use .this consistently - at first glance it looks as if it was a static method
 
             try
             {
-                this.logger = new Logger();
+                this.logger = new Logger(); //please use .this consistently
                 this.logger.passMsgToDisplay += OnIncomingTextToDisplay;
                 OnIncomingTextToDisplay(this, $"Log file created at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".");
             }
@@ -58,7 +58,8 @@ namespace TMS_Updater
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-                textBoxPathToTMS.Text = fbd.SelectedPath;
+                textBoxPathToTMS.Text = fbd.SelectedPath; //as far as I understand from the label in GUI, this expects the path to the jobs folder.
+                //this is not good, because jobs is a subfolder of an organization, and you don't know into which organization you're dropping stuff (as there are multiple organizations)
             }
         }
 
@@ -86,7 +87,7 @@ namespace TMS_Updater
 
         private void OnIncomingTextToDisplay(object sender, string msg)
         {
-            textBoxLCD.Invoke(new Action (() => textBoxLCD.AppendText("* " + msg +"\r\n\r\n")));
+            textBoxLCD.Invoke(new Action (() => textBoxLCD.AppendText("* " + msg +"\r\n\r\n"))); //what is this LCD thing?
         }
 
         private void ButtonDictionary_Click(object sender, EventArgs e)

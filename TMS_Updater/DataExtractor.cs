@@ -13,7 +13,10 @@ namespace TMS_Updater
         //public event EventHandler<string> passMsgToDisplay;
         Logger logger;
 
-        public void Begin(string pathToSource, string pathToTMS, Logger logger)
+        public void Begin(string pathToSource, string pathToTMS, Logger logger) //I am happy that this is the only public method here.
+        //however, you tend to call your methods 'Begin'. This is not a good name, because by convention it suggests to the user that its an asynchronous method that requires calling an 'End' method at some point
+        //in other words, it suggests following the pattern like here https://stackoverflow.com/questions/11620310/do-you-have-to-call-endinvoke-or-define-a-callback-for-asynchronous-method-ca
+        //but it does not, so it's confusing. If you don't have a better name (like e.g. Extract(), then just call it something generic like Work() or Do())
         {
             this.logger = logger;
             this.logger.Log($"Fixed files path set to:\r\n{pathToSource}");
@@ -27,15 +30,17 @@ namespace TMS_Updater
             List<string> allFiles = Directory.GetFiles(pathToSource, "*.sdlxliff", SearchOption.AllDirectories).ToList();
             this.logger.Log($"{allFiles.Count()} sdlxliff files detected.");
 
-            ZipInjector zipInjector = new ZipInjector(pathToTMS, ExtractDataFromAll(allFiles), this.logger);
+            ZipInjector zipInjector = new ZipInjector(pathToTMS, ExtractDataFromAll(allFiles), this.logger); //better use the Inversion of Control with Dependency Injection patterns,
+                                                                                                             //i.e. pass the ZipInjector as parameter the same way you're passing the logger
+                                                                                                             //this makes it clear which component relies on which
             zipInjector.Begin();
         }
 
-        bool ArePathsValid(string pathToSource, string pathToTMS)
+        bool ArePathsValid(string pathToSource, string pathToTMS) //an MSFT convention suggests to always explicitly specify the access modifier
         {
-            if (Directory.GetFiles(pathToSource, "*.sdlxliff", SearchOption.AllDirectories).Length == 0)
+            if (Directory.GetFiles(pathToSource, "*.sdlxliff", SearchOption.AllDirectories).Length == 0)  //when comparing strings bear in mind case sensitivity. What if the file is .SDLXLIFF?
             {
-                this.logger.Log($"Error: No SDLXLIFF files found in given directory.");
+                this.logger.Log($"Error: No SDLXLIFF files found in given directory."); //as a best practice... in error message include *what* is the given directory. Otherwise it's quite frustrating to read a message and not know what exactly is wrong and where
                 return false;
             }
 
@@ -87,7 +92,7 @@ namespace TMS_Updater
 
                     if (fileReader.Name == "file")
                     {
-                        rawOriginal = fileReader.GetAttribute("original"); //"original" is the name of attribute inside "file" element
+                        rawOriginal = fileReader.GetAttribute("original"); //"original" is the name of attribute inside "file" element <-- well, here it's quite obvious, since you're calling a 'GetAttribute' on an element called File
                         rawSRCLang = fileReader.GetAttribute("source-language");
                         rawTRGLang = fileReader.GetAttribute("target-language");
                         break; //skip rest of the file

@@ -24,7 +24,7 @@ namespace TMS_Updater
             this.logger = logger;
         }
 
-        public void Begin()
+        public void Begin() //see other comment about 'Begin' method
         {
             foreach (ExtractedData currentXliffData in this.fullListOfextrData)
             {
@@ -52,7 +52,11 @@ namespace TMS_Updater
 
         bool DoesArchiveExist(ExtractedData currentXliffData)
         {
-            List<string> archivesForThisXliff = Directory.GetFiles(this.pathToTMS, currentXliffData.TaskID() + "_*").ToList();
+            List<string> archivesForThisXliff = Directory.GetFiles(this.pathToTMS, currentXliffData.TaskID() + "_*").ToList();//so, if you have 200000 sdlxliff files as ExtractedData,
+                                                                                                                              //then you will be searching through ALL files (potentially hundreds of thousands) in a TMS archive 200000 times? 
+                                                                                                                              //that's a performance problem - much bigger than what we discussed about last week in terms of concurrent execution overhead
+
+                                                                                                                              //also - Task ID is not interesting to you here, because you need Job ID (a job has many tasks)
             if (archivesForThisXliff.Count == 1)
             {
                 currentXliffData.ZipNameWithPath = archivesForThisXliff[0];
@@ -70,7 +74,7 @@ namespace TMS_Updater
 
         string DetermineSubfolderName(ExtractedData currentXliffData)
         {
-            glossary.Prepare();
+            glossary.Prepare(); //so, building the glossary 200.000 times?:) 
 
             string part1;
             string part2;
@@ -136,14 +140,14 @@ namespace TMS_Updater
 
         bool IsFileInZipOlder(ExtractedData currentXliffData)
         {
-            using (ZipFile zip = ZipFile.Read(currentXliffData.ZipNameWithPath))
+            using (ZipFile zip = ZipFile.Read(currentXliffData.ZipNameWithPath)) //so, reading the same zip again, 200000 times? :)
             {
                 foreach (ZipEntry entry in zip)
                 {
                     string expectedFilename = "TGT/" + currentXliffData.archiveSubname + "/" + currentXliffData.XliffFilename();
                     if (entry.FileName == expectedFilename)
                     {
-                        DateTime zipFileDate = entry.LastModified;
+                        DateTime zipFileDate = entry.LastModified; 
                         DateTime incomingFileDate = File.GetLastWriteTime(currentXliffData.file);
                         if (zipFileDate < incomingFileDate)
                         {

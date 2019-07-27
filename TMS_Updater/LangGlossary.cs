@@ -10,16 +10,16 @@ namespace TMS_Updater
 {
     public class LangGlossary
     {
-        public Dictionary<string, string> content = new Dictionary<string, string>();
+        public Dictionary<string, string> content = new Dictionary<string, string>(); //again, public mutable fields are bad idea
 
         public void Prepare()
         {
             string line;
             System.IO.StreamReader file = null;
 
-            try
+            try //the thing you're doing here is very weird and ugly
             {
-                file = new System.IO.StreamReader("glossary.txt");
+                file = new System.IO.StreamReader("glossary.txt"); //for streams always prefer the 'using' pattern . If anything goes wrong, you're not disposing your reader and stream, which can cause issues
             }
             catch
             {
@@ -39,19 +39,19 @@ namespace TMS_Updater
 
                 try
                 {
-                    if (line == Regex.Match(line, "[a-zA-Z0-9\\-]+ means [a-zA-Z0-9\\-]+\\.").ToString())
+                    if (line == Regex.Match(line, "[a-zA-Z0-9\\-]+ means [a-zA-Z0-9\\-]+\\.").ToString()) //avoid plain text files for structured data... there's lots of formats like XML and JSON or CSV which are better
                     {
                         string nameInTMS = Regex.Replace(line, " means.*?\\.", "");
                         string nameInFiles = Regex.Replace(line, ".*? means |\\.", "");
                         content.Add(nameInTMS, nameInFiles);
                     }
                 }
-                catch
+                catch //so, you can create a glossary, and make a typo and miss some lang pair mapping and never realize that something went wrong...
                 {
                     continue;
                 }
             }
-            file.Close();
+            file.Close(); //as I said, use 'using' pattern
         }
     }
 }
