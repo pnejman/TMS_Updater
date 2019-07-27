@@ -45,7 +45,7 @@ namespace TMS_Updater
                     continue;
                 }
 
-                this.noOfFilesProcessed++;
+                UpdateZipWithNewFile(currentXliffData);
             }
             DisplaySummary();
         }
@@ -61,7 +61,7 @@ namespace TMS_Updater
             else
             {
                 string text = $"Error while processing file\r\n" +
-                              $"{currentXliffData.file}\r\n" +
+                              $"{currentXliffData.nameAndPathOfNewFile}\r\n" +
                               $"Archive for Task ID {currentXliffData.TaskID()} not found.";
                 this.logger.Log(text);
                 return false;
@@ -117,8 +117,8 @@ namespace TMS_Updater
             {
                 foreach (ZipEntry entry in zip.Entries)
                 {
-                    string expectedFilename = "TGT/" + currentXliffData.archiveSubname + "/" + currentXliffData.XliffFilename();
-                    if (entry.FileName == expectedFilename)
+                    currentXliffData.nameAndSubPathOfZippedXliff = "TGT/" + currentXliffData.archiveSubname + "/" + currentXliffData.XliffFilename();
+                    if (entry.FileName == currentXliffData.nameAndSubPathOfZippedXliff)
                     {
                         return true;
                     }
@@ -127,7 +127,7 @@ namespace TMS_Updater
             string text = $"Error: Couldn't find file:\r\n" +
                           $"{currentXliffData.XliffFilename()}\r\n" +
                           $"inside archive\r\n" +
-                          $"{currentXliffData.ZipNameWithPath}" +
+                          $"{currentXliffData.ZipNameWithPath}\r\n" +
                           $"and subfolder\r\n" +
                           $"{currentXliffData.archiveSubname}";
             this.logger.Log(text);
@@ -140,12 +140,11 @@ namespace TMS_Updater
             {
                 foreach (ZipEntry entry in zip)
                 {
-                    string expectedFilename = "TGT/" + currentXliffData.archiveSubname + "/" + currentXliffData.XliffFilename();
-                    if (entry.FileName == expectedFilename)
+                    if (entry.FileName == currentXliffData.nameAndSubPathOfZippedXliff)
                     {
                         DateTime zipFileDate = entry.LastModified;
-                        DateTime incomingFileDate = File.GetLastWriteTime(currentXliffData.file);
-                        if (zipFileDate < incomingFileDate)
+                        DateTime incomingFileDate = File.GetLastWriteTime(currentXliffData.nameAndPathOfNewFile);
+                        if (DateTime.Compare(zipFileDate, incomingFileDate) < -1) //NOTE: date of last modification read from "loose" file and from "zipped" file may differ by about 1 second even if that's the same file
                         {
                             return true;
                         }
@@ -153,10 +152,39 @@ namespace TMS_Updater
                 }
             }
             string text = $"File skipped:\r\n" +
-                          $"{currentXliffData.XliffFilename()}\r\n" +
+                          $"{currentXliffData.nameAndPathOfNewFile}\r\n" +
                           $"because it's older or the same as the file already present in archive.";
             this.logger.Log(text);
             return false;
+        }
+
+        void UpdateZipWithNewFile(ExtractedData currentXliffData)
+        {
+            try
+            {
+                using (ZipFile zip = ZipFile.Read(currentXliffData.ZipNameWithPath))
+                {
+                    for (int currentEntry = 0; currentEntry < zip.Entries.Count; currentEntry++) //"foreach" loop couses errors due to list re-indexation
+                    {
+                        if (zip[currentEntry].FileName == currentXliffData.nameAndSubPathOfZippedXliff)
+                        {
+                            zip.RemoveEntry(zip[currentEntry]);
+                            zip.AddFile(currentXliffData.nameAndPathOfNewFile, "TGT\\"+currentXliffData.archiveSubname+"\\");
+                            zip.Save();
+                            this.noOfFilesProcessed++;
+                        }
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                string text = $"Error: Couldn't upload file:\r\n" +
+                              $"{currentXliffData.nameAndPathOfNewFile}\r\n" +
+                              $"to archive:\r\n" +
+                              $"{currentXliffData.ZipNameWithPath}\r\n" +
+                              $"{error.Message}";
+                this.logger.Log(text);
+            }
         }
 
         void DisplaySummary()
