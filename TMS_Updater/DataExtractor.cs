@@ -105,7 +105,7 @@ namespace TMS_Updater
                 sourceLang = rawSRCLang,
                 targetLang = rawTRGLang,
                 rawOriginal = rawOriginal,
-                file = file,
+                nameAndPathOfNewFile = file,
             };
         }
     }
