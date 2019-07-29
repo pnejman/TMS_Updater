@@ -13,7 +13,7 @@ namespace TMS_Updater
         string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\TMS Updater Logs\\";
         public event EventHandler<string> passMsgToDisplay;
 
-        public Logger()
+        public Logger(LanguageDictionary lng)
         {
             this.logFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss") + "_log.txt";
             if (!(Directory.Exists(path)))
@@ -21,9 +21,9 @@ namespace TMS_Updater
                 Directory.CreateDirectory(path);
             }
             File.AppendAllText(path + this.logFileName,
-                               $"This is TMS Updater log.\r\n" +
-                               $"(Tool for batch updating SDLXLIFF files on TMS.)\r\n" +
-                               $"Created {DateTime.Now.ToString("yyyy-MM-dd, HH:mm:ss")}.\r\n\r\n");
+                               lng.txt["This is log of [TMS Updater] program."] +"\r\n" +
+                               lng.txt["(Tool for automatic updating SDLXLIFF files on TMS.)"] +"\r\n" +
+                               lng.txt["Created:"] + $" {DateTime.Now.ToString("yyyy-MM-dd, HH:mm:ss")}.\r\n\r\n");
         }
 
         public void Log(string textToLog)

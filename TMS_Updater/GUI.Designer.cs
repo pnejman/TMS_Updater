@@ -1,6 +1,6 @@
 ﻿namespace TMS_Updater
 {
-    partial class Form1
+    partial class GUI
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,7 @@
             this.labelSourceFolder = new System.Windows.Forms.Label();
             this.labelTMSFolder = new System.Windows.Forms.Label();
             this.buttonProceed = new System.Windows.Forms.Button();
-            this.textBoxLCD = new System.Windows.Forms.TextBox();
+            this.mainDisplay = new System.Windows.Forms.TextBox();
             this.buttonSourceBrowse = new System.Windows.Forms.Button();
             this.buttonTMSBrowse = new System.Windows.Forms.Button();
             this.buttonDictionary = new System.Windows.Forms.Button();
@@ -41,17 +41,17 @@
             // 
             // textBoxPathToSource
             // 
-            this.textBoxPathToSource.Location = new System.Drawing.Point(140, 12);
+            this.textBoxPathToSource.Location = new System.Drawing.Point(175, 12);
             this.textBoxPathToSource.Name = "textBoxPathToSource";
-            this.textBoxPathToSource.Size = new System.Drawing.Size(566, 20);
+            this.textBoxPathToSource.Size = new System.Drawing.Size(502, 20);
             this.textBoxPathToSource.TabIndex = 0;
             this.textBoxPathToSource.TextChanged += new System.EventHandler(this.EnableOrDisableZipButton);
             // 
             // textBoxPathToTMS
             // 
-            this.textBoxPathToTMS.Location = new System.Drawing.Point(140, 43);
+            this.textBoxPathToTMS.Location = new System.Drawing.Point(175, 43);
             this.textBoxPathToTMS.Name = "textBoxPathToTMS";
-            this.textBoxPathToTMS.Size = new System.Drawing.Size(566, 20);
+            this.textBoxPathToTMS.Size = new System.Drawing.Size(502, 20);
             this.textBoxPathToTMS.TabIndex = 1;
             this.textBoxPathToTMS.TextChanged += new System.EventHandler(this.EnableOrDisableZipButton);
             // 
@@ -77,29 +77,29 @@
             // 
             this.buttonProceed.Enabled = false;
             this.buttonProceed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.buttonProceed.Location = new System.Drawing.Point(713, 69);
+            this.buttonProceed.Location = new System.Drawing.Point(683, 69);
             this.buttonProceed.Name = "buttonProceed";
-            this.buttonProceed.Size = new System.Drawing.Size(75, 23);
+            this.buttonProceed.Size = new System.Drawing.Size(105, 23);
             this.buttonProceed.TabIndex = 4;
-            this.buttonProceed.Text = "Zip it!";
+            this.buttonProceed.Text = "Go!";
             this.buttonProceed.UseVisualStyleBackColor = true;
             this.buttonProceed.Click += new System.EventHandler(this.ButtonProceed_Click);
             // 
-            // textBoxLCD
+            // mainDisplay
             // 
-            this.textBoxLCD.Location = new System.Drawing.Point(12, 98);
-            this.textBoxLCD.Multiline = true;
-            this.textBoxLCD.Name = "textBoxLCD";
-            this.textBoxLCD.ReadOnly = true;
-            this.textBoxLCD.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxLCD.Size = new System.Drawing.Size(776, 537);
-            this.textBoxLCD.TabIndex = 5;
+            this.mainDisplay.Location = new System.Drawing.Point(12, 98);
+            this.mainDisplay.Multiline = true;
+            this.mainDisplay.Name = "mainDisplay";
+            this.mainDisplay.ReadOnly = true;
+            this.mainDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.mainDisplay.Size = new System.Drawing.Size(776, 537);
+            this.mainDisplay.TabIndex = 5;
             // 
             // buttonSourceBrowse
             // 
-            this.buttonSourceBrowse.Location = new System.Drawing.Point(713, 10);
+            this.buttonSourceBrowse.Location = new System.Drawing.Point(683, 10);
             this.buttonSourceBrowse.Name = "buttonSourceBrowse";
-            this.buttonSourceBrowse.Size = new System.Drawing.Size(75, 23);
+            this.buttonSourceBrowse.Size = new System.Drawing.Size(105, 23);
             this.buttonSourceBrowse.TabIndex = 6;
             this.buttonSourceBrowse.Text = "Browse";
             this.buttonSourceBrowse.UseVisualStyleBackColor = true;
@@ -107,9 +107,9 @@
             // 
             // buttonTMSBrowse
             // 
-            this.buttonTMSBrowse.Location = new System.Drawing.Point(713, 41);
+            this.buttonTMSBrowse.Location = new System.Drawing.Point(683, 41);
             this.buttonTMSBrowse.Name = "buttonTMSBrowse";
-            this.buttonTMSBrowse.Size = new System.Drawing.Size(75, 23);
+            this.buttonTMSBrowse.Size = new System.Drawing.Size(105, 23);
             this.buttonTMSBrowse.TabIndex = 7;
             this.buttonTMSBrowse.Text = "Browse";
             this.buttonTMSBrowse.UseVisualStyleBackColor = true;
@@ -117,7 +117,7 @@
             // 
             // buttonDictionary
             // 
-            this.buttonDictionary.Location = new System.Drawing.Point(614, 69);
+            this.buttonDictionary.Location = new System.Drawing.Point(585, 69);
             this.buttonDictionary.Name = "buttonDictionary";
             this.buttonDictionary.Size = new System.Drawing.Size(92, 23);
             this.buttonDictionary.TabIndex = 8;
@@ -125,7 +125,7 @@
             this.buttonDictionary.UseVisualStyleBackColor = true;
             this.buttonDictionary.Click += new System.EventHandler(this.ButtonDictionary_Click);
             // 
-            // Form1
+            // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -133,7 +133,7 @@
             this.Controls.Add(this.buttonDictionary);
             this.Controls.Add(this.buttonTMSBrowse);
             this.Controls.Add(this.buttonSourceBrowse);
-            this.Controls.Add(this.textBoxLCD);
+            this.Controls.Add(this.mainDisplay);
             this.Controls.Add(this.buttonProceed);
             this.Controls.Add(this.labelTMSFolder);
             this.Controls.Add(this.labelSourceFolder);
@@ -141,7 +141,7 @@
             this.Controls.Add(this.textBoxPathToSource);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "GUI";
             this.Text = "TMS Uploader";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -155,7 +155,7 @@
         private System.Windows.Forms.Label labelSourceFolder;
         private System.Windows.Forms.Label labelTMSFolder;
         private System.Windows.Forms.Button buttonProceed;
-        private System.Windows.Forms.TextBox textBoxLCD;
+        private System.Windows.Forms.TextBox mainDisplay;
         private System.Windows.Forms.Button buttonSourceBrowse;
         private System.Windows.Forms.Button buttonTMSBrowse;
         private System.Windows.Forms.Button buttonDictionary;

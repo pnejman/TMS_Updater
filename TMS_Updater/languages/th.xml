@@ -1,0 +1,30 @@
+<dictionary>
+<entry id="Folder with new files:">โฟลเดอร์ที่มีไฟล์ใหม่:</entry>
+<entry id="TMS folder with ZIP files:">โฟลเดอร์ TMS พร้อมไฟล์ ZIP:</entry>
+<entry id="Browse">เรียกดู</entry>
+<entry id="Go!">ไป!</entry>
+<entry id="Log file created at this location:">ไฟล์บันทึกที่สร้างในตำแหน่งนี้:</entry>
+<entry id="Error: Failed to create log file at this location:">ข้อผิดพลาด: ล้มเหลวในการสร้างไฟล์บันทึกที่ตำแหน่งนี้:</entry>
+<entry id="Glossary file currently unavailable. It will be generated automatically during program run.">ไฟล์อภิธานศัพท์ไม่สามารถใช้งานได้ในขณะนี้มันจะถูกสร้างขึ้นโดยอัตโนมัติในระหว่างการรันโปรแกรม</entry>
+<entry id="Path to new files set to:">พา ธ ไปยังไฟล์ใหม่ตั้งค่าเป็น:</entry>
+<entry id="TMS path set to:">เส้นทาง TMS ตั้งค่าเป็น:</entry>
+<entry id="Number of sdlxliff files detected:">ตรวจพบจำนวนไฟล์ sdlxliff:</entry>
+<entry id="Error: No sdlxliff files found in given directory.">ข้อผิดพลาด: ไม่พบไฟล์ sdlxliff ในไดเรกทอรีที่กำหนด</entry>
+<entry id="Error: No archives found in given TMS directory.">ข้อผิดพลาด: ไม่พบไฟล์เก็บถาวรในไดเรกทอรี TMS ที่กำหนด</entry>
+<entry id="Error: Failed to extract data from:">ข้อผิดพลาด: ไม่สามารถดึงข้อมูลจาก:</entry>
+<entry id="Error while processing file:">ข้อผิดพลาดขณะประมวลผลไฟล์:</entry>
+<entry id="Archive for given Job ID could not be found:">ไม่พบที่เก็บสำหรับ Job ID ที่กำหนด:</entry>
+<entry id="Error: It was not possible to find file:">ข้อผิดพลาด: ไม่สามารถค้นหาไฟล์:</entry>
+<entry id="inside archive:">ภายในที่เก็บถาวร:</entry>
+<entry id="inside sub-folder:">ภายในโฟลเดอร์ย่อย:</entry>
+<entry id="File skipped:">ไฟล์ถูกข้าม:</entry>
+<entry id="Incoming file it's older or the same as the file already present in archive.">ไฟล์ที่เข้ามามันเก่ากว่าหรือเหมือนกับไฟล์ที่มีอยู่แล้วในไฟล์เก็บถาวร</entry>
+<entry id="Error: It was not possible to upload file:">ข้อผิดพลาด: ไม่สามารถอัปโหลดไฟล์:</entry>
+<entry id="into this archive:">ลงในที่เก็บถาวรนี้:</entry>
+<entry id="Job's done.">งานเสร็จแล้ว</entry>
+<entry id="Files detected:">ตรวจพบไฟล์:</entry>
+<entry id="Files processed:">ไฟล์ที่ประมวลผล:</entry>
+<entry id="This is log of [TMS Updater] program.">นี่คือบันทึกของโปรแกรม TMS Updater</entry>
+<entry id="(Tool for automatic updating SDLXLIFF files on TMS.)">(เครื่องมือสำหรับอัปเดตไฟล์ SDLXLIFF อัตโนมัติบน TMS)</entry>
+<entry id="Created:">สร้างแล้ว:</entry>
+</dictionary>

@@ -1,0 +1,30 @@
+<dictionary>
+<entry id="Folder with new files:">Carpeta con nuevos archivos:</entry>
+<entry id="TMS folder with ZIP files:">Carpeta TMS con archivos ZIP:</entry>
+<entry id="Browse">Examinar</entry>
+<entry id="Go!">¡Ir!</entry>
+<entry id="Log file created at this location:">Archivo de registro creado en esta ubicación:</entry>
+<entry id="Error: Failed to create log file at this location:">Error: no se pudo crear el archivo de registro en esta ubicación:</entry>
+<entry id="Glossary file currently unavailable. It will be generated automatically during program run.">El archivo del glosario no está disponible actualmente. Se generará automáticamente durante la ejecución del programa.</entry>
+<entry id="Path to new files set to:">Ruta de acceso a los archivos nuevos configurados en:</entry>
+<entry id="TMS path set to:">Ruta TMS establecida en:</entry>
+<entry id="Number of sdlxliff files detected:">Número de archivos sdlxliff detectados:</entry>
+<entry id="Error: No sdlxliff files found in given directory.">Error: no se encontraron archivos sdlxliff en el directorio dado:</entry>
+<entry id="Error: No archives found in given TMS directory.">Error: no se encontraron archivos en el directorio TMS dado.</entry>
+<entry id="Error: Failed to extract data from:">Error: Error al extraer datos de:</entry>
+<entry id="Error while processing file:">Error al procesar el archivo:</entry>
+<entry id="Archive for given Job ID could not be found:">No se pudo encontrar el archivo para el Job ID dado:</entry>
+<entry id="Error: It was not possible to find file:">Error: no fue posible encontrar el archivo:</entry>
+<entry id="inside archive:">dentro del archivo:</entry>
+<entry id="inside sub-folder:">dentro de la subcarpeta:</entry>
+<entry id="File skipped:">Archivo omitido:</entry>
+<entry id="Incoming file it's older or the same as the file already present in archive.">El archivo entrante es más antiguo o igual que el archivo ya presente en el archivo.</entry>
+<entry id="Error: It was not possible to upload file:">Error: no fue posible cargar el archivo:</entry>
+<entry id="into this archive:">en este archivo:</entry>
+<entry id="Job's done.">Trabajo realizado.</entry>
+<entry id="Files detected:">Archivos detectados:</entry>
+<entry id="Files processed:">Archivos procesados:</entry>
+<entry id="This is log of [TMS Updater] program.">Este es el registro del programa TMS Updater.</entry>
+<entry id="(Tool for automatic updating SDLXLIFF files on TMS.)">(Herramienta para actualizar automáticamente los archivos SDLXLIFF en TMS.)</entry>
+<entry id="Created:">Creado:</entry>
+</dictionary>

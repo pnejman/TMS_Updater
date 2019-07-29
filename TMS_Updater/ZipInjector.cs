@@ -15,17 +15,21 @@ namespace TMS_Updater
         string pathToTMS;
         Logger logger;
         int noOfFilesProcessed = 0;
-        LangGlossary glossary = new LangGlossary();
+        LanguageCodesGlossary glossary = new LanguageCodesGlossary();
+        LanguageDictionary lng;
 
-        public ZipInjector(string pathToTMS, List<ExtractedData> extractedData, Logger logger)
+        public ZipInjector(string pathToTMS, List<ExtractedData> extractedData, Logger logger, LanguageDictionary lng)
         {
             this.fullListOfextrData = extractedData;
             this.pathToTMS = pathToTMS;
             this.logger = logger;
+            this.lng = lng;
         }
 
-        public void Begin() //see other comment about 'Begin' method
+        public void Work()
         {
+            glossary.Prepare();
+
             foreach (ExtractedData currentXliffData in this.fullListOfextrData)
             {
                 if (!(DoesArchiveExist(currentXliffData)))
@@ -52,11 +56,9 @@ namespace TMS_Updater
 
         bool DoesArchiveExist(ExtractedData currentXliffData)
         {
-            List<string> archivesForThisXliff = Directory.GetFiles(this.pathToTMS, currentXliffData.TaskID() + "_*").ToList();//so, if you have 200000 sdlxliff files as ExtractedData,
-                                                                                                                              //then you will be searching through ALL files (potentially hundreds of thousands) in a TMS archive 200000 times? 
-                                                                                                                              //that's a performance problem - much bigger than what we discussed about last week in terms of concurrent execution overhead
-
-                                                                                                                              //also - Task ID is not interesting to you here, because you need Job ID (a job has many tasks)
+            List<string> archivesForThisXliff = Directory.GetFiles(this.pathToTMS, currentXliffData.GetJobID() + "_*").ToList();//so, if you have 200000 sdlxliff files as ExtractedData,
+                                                                                                                                //then you will be searching through ALL files (potentially hundreds of thousands) in a TMS archive 200000 times? 
+                                                                                                                                //that's a performance problem - much bigger than what we discussed about last week in terms of concurrent execution overhead
             if (archivesForThisXliff.Count == 1)
             {
                 currentXliffData.ZipNameWithPath = archivesForThisXliff[0];
@@ -64,9 +66,9 @@ namespace TMS_Updater
             }
             else
             {
-                string text = $"Error while processing file\r\n" +
-                              $"{currentXliffData.nameAndPathOfNewFile}\r\n" +
-                              $"Archive for Task ID {currentXliffData.TaskID()} not found.";
+                string text = lng.txt["Error while processing file:"] + "\r\n" +
+                                     $"{currentXliffData.nameAndPathOfNewFile}\r\n" +
+                              lng.txt["Archive for given Job ID could not be found:"] + $" {currentXliffData.GetJobID()}";
                 this.logger.Log(text);
                 return false;
             }
@@ -74,8 +76,6 @@ namespace TMS_Updater
 
         string DetermineSubfolderName(ExtractedData currentXliffData)
         {
-            glossary.Prepare(); //so, building the glossary 200.000 times?:) 
-
             string part1;
             string part2;
             string value;
@@ -121,18 +121,18 @@ namespace TMS_Updater
             {
                 foreach (ZipEntry entry in zip.Entries)
                 {
-                    currentXliffData.nameAndSubPathOfZippedXliff = "TGT/" + currentXliffData.archiveSubname + "/" + currentXliffData.XliffFilename();
+                    currentXliffData.nameAndSubPathOfZippedXliff = "TGT/" + currentXliffData.archiveSubname + "/" + currentXliffData.GetXliffFilename();
                     if (entry.FileName == currentXliffData.nameAndSubPathOfZippedXliff)
                     {
                         return true;
                     }
                 }
             }
-            string text = $"Error: Couldn't find file:\r\n" +
-                          $"{currentXliffData.XliffFilename()}\r\n" +
-                          $"inside archive\r\n" +
+            string text = lng.txt["Error: It was not possible to find file:"] + "\r\n" +
+                          $"{currentXliffData.GetXliffFilename()}\r\n" +
+                          lng.txt["inside archive:"] + "\r\n" +
                           $"{currentXliffData.ZipNameWithPath}\r\n" +
-                          $"and subfolder\r\n" +
+                          lng.txt["inside sub-folder:"] + "\r\n" +
                           $"{currentXliffData.archiveSubname}";
             this.logger.Log(text);
             return false;
@@ -156,9 +156,9 @@ namespace TMS_Updater
                     }
                 }
             }
-            string text = $"File skipped:\r\n" +
+            string text = lng.txt["File skipped:"]+"\r\n" +
                           $"{currentXliffData.nameAndPathOfNewFile}\r\n" +
-                          $"because it's older or the same as the file already present in archive.";
+                          lng.txt["Incoming file it's older or the same as the file already present in archive."];
             this.logger.Log(text);
             return false;
         }
@@ -174,7 +174,7 @@ namespace TMS_Updater
                         if (zip[currentEntry].FileName == currentXliffData.nameAndSubPathOfZippedXliff)
                         {
                             zip.RemoveEntry(zip[currentEntry]);
-                            zip.AddFile(currentXliffData.nameAndPathOfNewFile, "TGT\\"+currentXliffData.archiveSubname+"\\");
+                            zip.AddFile(currentXliffData.nameAndPathOfNewFile, "TGT\\" + currentXliffData.archiveSubname + "\\");
                             zip.Save();
                             this.noOfFilesProcessed++;
                         }
@@ -183,9 +183,9 @@ namespace TMS_Updater
             }
             catch (Exception error)
             {
-                string text = $"Error: Couldn't upload file:\r\n" +
+                string text = lng.txt["Error: It was not possible to upload file:"] + "\r\n" +
                               $"{currentXliffData.nameAndPathOfNewFile}\r\n" +
-                              $"to archive:\r\n" +
+                              lng.txt["into this archive:"] + "\r\n" +
                               $"{currentXliffData.ZipNameWithPath}\r\n" +
                               $"{error.Message}";
                 this.logger.Log(text);
@@ -194,9 +194,9 @@ namespace TMS_Updater
 
         void DisplaySummary()
         {
-            string text = $"Job's done.\r\n" +
-                          $"Files detected: {this.fullListOfextrData.Count}\r\n" +
-                          $"Files processed: {this.noOfFilesProcessed}\r\n";
+            string text = lng.txt["Job's done."] +"\r\n" +
+                          lng.txt["Files detected:"] + $" {this.fullListOfextrData.Count}\r\n" +
+                          lng.txt["Files processed:"] + $" {this.noOfFilesProcessed}\r\n";
             this.logger.Log(text);
         }
     }

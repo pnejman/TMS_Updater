@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace TMS_Updater
 {
-    public class LangGlossary
+    public class LanguageCodesGlossary
     {
         public Dictionary<string, string> content = new Dictionary<string, string>(); //again, public mutable fields are bad idea
 

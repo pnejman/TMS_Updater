@@ -1,0 +1,30 @@
+<dictionary>
+<entry id="Folder with new files:">नई फ़ाइलों के साथ फ़ोल्डर:</entry>
+<entry id="TMS folder with ZIP files:">ZIP फ़ाइलों के साथ TMS फ़ोल्डर:</entry>
+<entry id="Browse">ब्राउज़ करें</entry>
+<entry id="Go!">जाओ!</entry>
+<entry id="Log file created at this location:">इस स्थान पर बनाई गई लॉग फ़ाइल:</entry>
+<entry id="Error: Failed to create log file at this location:">्रुटि: इस स्थान पर लॉग फ़ाइल बनाने में विफल:</entry>
+<entry id="Glossary file currently unavailable. It will be generated automatically during program run.">शब्दावली फ़ाइल वर्तमान में अनुपलब्ध है। प्रोग्राम रन के दौरान यह अपने आप जेनरेट होगा।</entry>
+<entry id="Path to new files set to:">नई फ़ाइलों के लिए पथ:</entry>
+<entry id="TMS path set to:">टीएमएस पथ सेट टू:</entry>
+<entry id="Number of sdlxliff files detected:">Nsdlxliff फ़ाइलों की संख्या का पता चला:</entry>
+<entry id="Error: No sdlxliff files found in given directory.">त्रुटि: दी गई निर्देशिका में कोई sdlxliff फाइलें नहीं मिलीं।</entry>
+<entry id="Error: No archives found in given TMS directory.">त्रुटि: दिए गए टीएमएस निर्देशिका में कोई अभिलेखागार नहीं मिला।</entry>
+<entry id="Error: Failed to extract data from:">त्रुटि: से डेटा निकालने में विफल:</entry>
+<entry id="Error while processing file:">फ़ाइल संसाधित करते समय त्रुटि:</entry>
+<entry id="Archive for given Job ID could not be found:">दिए गए Job ID के लिए संग्रह नहीं मिल सका:</entry>
+<entry id="Error: It was not possible to find file:">त्रुटि: फ़ाइल ढूंढना संभव नहीं था:</entry>
+<entry id="inside archive:">संग्रह के अंदर:</entry>
+<entry id="inside sub-folder:">उप-फ़ोल्डर के अंदर:</entry>
+<entry id="File skipped:">फ़ाइल स्किप हो गई:</entry>
+<entry id="Incoming file it's older or the same as the file already present in archive.">आने वाली फाइल पुरानी या वैसी ही है, जैसी फाइल पहले ही आर्काइव में मौजूद है।</entry>
+<entry id="Error: It was not possible to upload file:">त्रुटि: फ़ाइल अपलोड करना संभव नहीं था:</entry>
+<entry id="into this archive:">इस संग्रह में:</entry>
+<entry id="Job's done.">नौकरी की है।</entry>
+<entry id="Files detected:">फ़ाइलों का पता लगाया गया:</entry>
+<entry id="Files processed:">फ़ाइलें संसाधित हुईं:</entry>
+<entry id="This is log of [TMS Updater] program.">यह TMSUpdater प्रोग्राम का लॉग है।</entry>
+<entry id="(Tool for automatic updating SDLXLIFF files on TMS.)">(TMS पर स्वत: अद्यतन SDLXLIFF फ़ाइलों के लिए उपकरण।)</entry>
+<entry id="Created:">बनाया गया:</entry>
+</dictionary>

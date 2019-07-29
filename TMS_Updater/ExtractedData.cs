@@ -23,13 +23,13 @@ namespace TMS_Updater
         public string archiveSubname;
         public string nameAndSubPathOfZippedXliff;
 
-        public string XliffFilename() //again, what is this? method names should describe it's ACTIVITY, not a piece of data.
+        public string GetXliffFilename()
         {
             //that's something that would probably benefit from a quick unit test. and I bet your keyboard that it would have been faster to develop & debug in a test method rather than how you've done when working on it
             return Regex.Replace(this.nameAndPathOfNewFile, ".*?\\\\", ""); //backslash order: #1: escape #2 from c# code, #2: escape #4 from Regex, #3: escape #4 from c# code, #4: actual backslash
         }
 
-        public string TaskID()
+        public string GetJobID()
         {
             //that's something that would probably benefit from a quick unit test. and I bet your keyboard that it would have been faster to develop & debug in a test method rather than how you've done when working on it
             return Regex.Replace(this.rawOriginal, "(.*?\\\\Data\\\\TC\\\\)|(\\\\SRC\\\\.*?$)", "");

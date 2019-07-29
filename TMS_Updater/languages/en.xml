@@ -1,0 +1,30 @@
+<dictionary>
+<entry id="Folder with new files:">Folder with new files:</entry>
+<entry id="TMS folder with ZIP files:">TMS folder with ZIP files:</entry>
+<entry id="Browse">Browse</entry>
+<entry id="Go!">Go!</entry>
+<entry id="Log file created at this location:">Log file created at this location:</entry>
+<entry id="Error: Failed to create log file at this location:">Error: Failed to create log file at this location:</entry>
+<entry id="Glossary file currently unavailable. It will be generated automatically during program run.">Glossary file currently unavailable. It will be generated automatically during program run.</entry>
+<entry id="Path to new files set to:">Path to new files set to:</entry>
+<entry id="TMS path set to:">TMS path set to:</entry>
+<entry id="Number of sdlxliff files detected:">Number of sdlxliff files detected:</entry>
+<entry id="Error: No sdlxliff files found in given directory.">Error: No sdlxliff files found in given directory.</entry>
+<entry id="Error: No archives found in given TMS directory.">Error: No archives found in given TMS directory.</entry>
+<entry id="Error: Failed to extract data from:">Error: Failed to extract data from:</entry>
+<entry id="Error while processing file:">Error while processing file:</entry>
+<entry id="Archive for given Job ID could not be found:">Archive for given Job ID could not be found:</entry>
+<entry id="Error: It was not possible to find file:">Error: It was not possible to find file:</entry>
+<entry id="inside archive:">inside archive:</entry>
+<entry id="inside sub-folder:">inside sub-folder:</entry>
+<entry id="File skipped:">File skipped:</entry>
+<entry id="Incoming file it's older or the same as the file already present in archive.">Incoming file it's older or the same as the file already present in archive.</entry>
+<entry id="Error: It was not possible to upload file:">Error: It was not possible to upload file:</entry>
+<entry id="into this archive:">into this archive:</entry>
+<entry id="Job's done.">Job's done.</entry>
+<entry id="Files detected:">Files detected:</entry>
+<entry id="Files processed:">Files processed:</entry>
+<entry id="This is log of [TMS Updater] program.">This is log of [TMS Updater] program.</entry>
+<entry id="(Tool for automatic updating SDLXLIFF files on TMS.)">(Tool for automatic updating SDLXLIFF files on TMS.)</entry>
+<entry id="Created:">Created:</entry>
+</dictionary>

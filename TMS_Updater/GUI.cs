@@ -11,36 +11,55 @@ using System.IO;
 
 namespace TMS_Updater
 {
-    public partial class Form1 : Form
+    public partial class GUI : Form
     {
         DataExtractor dataExtractor = new DataExtractor(); //nicely encapsulated functionality
         Logger logger;
+        LanguageDictionary lng;
 
-        public Form1()
+        public GUI(string language)
         {
             InitializeComponent();
+            this.lng = new LanguageDictionary(language);
             textBoxPathToSource.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             textBoxPathToTMS.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            labelSourceFolder.Text = lng.txt["Folder with new files:"];
+            labelTMSFolder.Text = lng.txt["TMS folder with ZIP files:"];
+            buttonSourceBrowse.Text = lng.txt["Browse"];
+            buttonTMSBrowse.Text = lng.txt["Browse"];
+            buttonProceed.Text = lng.txt["Go!"];
+
+            if (language == "arsa")
+            {
+                textBoxPathToSource.RightToLeft = RightToLeft.Yes;
+                textBoxPathToTMS.RightToLeft = RightToLeft.Yes;
+                labelSourceFolder.RightToLeft = RightToLeft.Yes;
+                labelTMSFolder.RightToLeft = RightToLeft.Yes;
+                buttonSourceBrowse.RightToLeft = RightToLeft.Yes;
+                buttonTMSBrowse.RightToLeft = RightToLeft.Yes;
+                buttonProceed.RightToLeft = RightToLeft.Yes;
+                mainDisplay.RightToLeft = RightToLeft.Yes;
+            }
         }
 
         private void ButtonProceed_Click(object sender, EventArgs e)
         {
-            DisableGui(); //please use .this consistently - at first glance it looks as if it was a static method
+            this.DisableGui();
 
             try
             {
-                this.logger = new Logger(); //please use .this consistently
+                this.logger = new Logger(lng);
                 this.logger.passMsgToDisplay += OnIncomingTextToDisplay;
-                OnIncomingTextToDisplay(this, $"Log file created at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".");
+                OnIncomingTextToDisplay(this, this.lng.txt["Log file created at this location:"] + $" \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".");
             }
             catch (Exception error)
             {
-                OnIncomingTextToDisplay(this, $"Warning: Failed to create log file at \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".\r\n" +
+                OnIncomingTextToDisplay(this, this.lng.txt["Error: Failed to create log file at this location:"] + $" \"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\TMS Updater Logs\".\r\n" +
                                               $"{error.Message}");
                 return;
             }
 
-            dataExtractor.Begin(textBoxPathToSource.Text, textBoxPathToTMS.Text, this.logger);
+            dataExtractor.Work(textBoxPathToSource.Text, textBoxPathToTMS.Text, this.logger, this.lng);
         }
 
         private void ButtonSourceBrowse_Click(object sender, EventArgs e)
@@ -65,7 +84,7 @@ namespace TMS_Updater
 
         private void EnableOrDisableZipButton(object sender, EventArgs e)
         {
-            if ((textBoxPathToSource.Text != "")&&(textBoxPathToTMS.Text != ""))
+            if ((textBoxPathToSource.Text != "") && (textBoxPathToTMS.Text != ""))
             {
                 buttonProceed.Enabled = true;
             }
@@ -87,7 +106,7 @@ namespace TMS_Updater
 
         private void OnIncomingTextToDisplay(object sender, string msg)
         {
-            textBoxLCD.Invoke(new Action (() => textBoxLCD.AppendText("* " + msg +"\r\n\r\n"))); //what is this LCD thing?
+            mainDisplay.Invoke(new Action(() => mainDisplay.AppendText("* " + msg + "\r\n\r\n")));
         }
 
         private void ButtonDictionary_Click(object sender, EventArgs e)
@@ -98,7 +117,7 @@ namespace TMS_Updater
             }
             catch
             {
-                MessageBox.Show("Glossary file currently unavailable.\r\nIt will be generated automatically during program run.");
+                MessageBox.Show(lng.txt["Glossary file currently unavailable. It will be generated automatically during program run."]);
             }
         }
     }

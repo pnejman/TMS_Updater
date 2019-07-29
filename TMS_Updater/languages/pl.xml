@@ -1,0 +1,30 @@
+<dictionary>
+<entry id="Folder with new files:">Folder z nowymi plikami:</entry>
+<entry id="TMS folder with ZIP files:">Folder TMS z plikami ZIP:</entry>
+<entry id="Browse">Przeglądaj</entry>
+<entry id="Go!">Rozpocznij!</entry>
+<entry id="Log file created at this location:">Plik dziennika utworzony w tej lokalizacji:</entry>
+<entry id="Error: Failed to create log file at this location:">Błąd: nie można utworzyć pliku dziennika w tej lokalizacji:</entry>
+<entry id="Glossary file currently unavailable. It will be generated automatically during program run.">Plik słownika jest obecnie niedostępny. Zostanie wygenerowany automatycznie podczas uruchamiania programu.</entry>
+<entry id="Path to new files set to:">Ścieżka do nowych plików ustawionych na:</entry>
+<entry id="TMS path set to:">Ścieżka TMS ustawiona na:</entry>
+<entry id="Number of sdlxliff files detected:">Liczba wykrytych plików sdlxliff:</entry>
+<entry id="Error: No sdlxliff files found in given directory.">Błąd: Brak plików sdlxliff w podanym katalogu.</entry>
+<entry id="Error: No archives found in given TMS directory.">Błąd: Brak archiwów w podanym katalogu TMS.</entry>
+<entry id="Error: Failed to extract data from:">Błąd: nie można wyodrębnić danych z:</entry>
+<entry id="Error while processing file:">Błąd podczas przetwarzania pliku:</entry>
+<entry id="Archive for given Job ID could not be found:">Nie można znaleźć archiwum dla danego Job ID:</entry>
+<entry id="Error: It was not possible to find file:">Błąd: Nie można znaleźć pliku:</entry>
+<entry id="inside archive:">wewnątrz archiwum:</entry>
+<entry id="inside sub-folder:">wewnątrz podfolderu:</entry>
+<entry id="File skipped:">Plik pominięty:</entry>
+<entry id="Incoming file it's older or the same as the file already present in archive.">Plik przychodzący jest starszy lub taki sam jak plik już obecny w archiwum.</entry>
+<entry id="Error: It was not possible to upload file:">Błąd: nie można przesłać pliku:</entry>
+<entry id="into this archive:">do tego archiwum:</entry>
+<entry id="Job's done.">Zadanie wykonane.</entry>
+<entry id="Files detected:">Wykryto pliki:</entry>
+<entry id="Files processed:">Pliki przetworzone:</entry>
+<entry id="This is log of [TMS Updater] program.">To jest dziennik programu TMS Updater.</entry>
+<entry id="(Tool for automatic updating SDLXLIFF files on TMS.)">(Narzędzie do automatycznego aktualizowania plików SDLXLIFF w TMS.)</entry>
+<entry id="Created:">Utworzony:</entry>
+</dictionary>

@@ -1,0 +1,30 @@
+<dictionary>
+<entry id="Folder with new files:">包含新文件的文件夹：</entry>
+<entry id="TMS folder with ZIP files:">带ZIP文件的TMS文件夹：</entry>
+<entry id="Browse">浏览</entry>
+<entry id="Go!">走！</entry>
+<entry id="Log file created at this location:">在此位置创建的日志文件：</entry>
+<entry id="Error: Failed to create log file at this location:">错误：无法在此位置创建日志文件：</entry>
+<entry id="Glossary file currently unavailable. It will be generated automatically during program run.">词汇表文件当前不可用。它将在程序运行期间自动生成。</entry>
+<entry id="Path to new files set to:">新文件的路径设置为：</entry>
+<entry id="TMS path set to:">TMS路径设置为：</entry>
+<entry id="Number of sdlxliff files detected:">检测到的sdlxliff文件数：</entry>
+<entry id="Error: No sdlxliff files found in given directory.">错误：在给定目录中找不到sdlxliff文件。</entry>
+<entry id="Error: No archives found in given TMS directory.">错误：在给定的TMS目录中找不到存档。</entry>
+<entry id="Error: Failed to extract data from:">错误：无法从以下位置提取数据：</entry>
+<entry id="Error while processing file:">处理文件时出错：</entry>
+<entry id="Archive for given Job ID could not be found:">无法找到给定JobID的存档：</entry>
+<entry id="Error: It was not possible to find file:">错误：无法找到文件：</entry>
+<entry id="inside archive:">在档案馆内：</entry>
+<entry id="inside sub-folder:">子文件夹：</entry>
+<entry id="File skipped:">跳过文件：</entry>
+<entry id="Incoming file it's older or the same as the file already present in archive.">传入文件较旧或与存档中已存在的文件相同。</entry>
+<entry id="Error: It was not possible to upload file:">错误：无法上传文件：</entry>
+<entry id="into this archive:">进入此存档：</entry>
+<entry id="Job's done.">工作完成。</entry>
+<entry id="Files detected:">检测到的文件：</entry>
+<entry id="Files processed:">已处理的文件：</entry>
+<entry id="This is log of [TMS Updater] program.">这是TMS Updater程序的日志。</entry>
+<entry id="(Tool for automatic updating SDLXLIFF files on TMS.)">（用于在TMS上自动更新SDLXLIFF文件的工具。）</entry>
+<entry id="Created:">已创建：</entry>
+</dictionary>
